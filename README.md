@@ -10,12 +10,9 @@ Canary project is a super light MVC PHP framework. If you like to get started wi
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* Clone git repo
+* Adjust Config file
+* Start writing code
 
 ### Contribution guidelines ###
 
