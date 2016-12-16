@@ -1,6 +1,6 @@
 # Canary #
 
-Canary project is a super light MVC PHP framework. If you like to get started with Canary please visit [[https://bitbucket.org/zobairq/canary/wiki/Getting%20Started|Get started]] for the precise guidlines.
+Canary project is a super light MVC PHP framework. If you like to get started with Canary please visit [[https://bitbucket.org/zobairq/canary/wiki/Get%20Started|Get started]] for the precise guidlines.
 
 ### What is this repository for? ###
 
