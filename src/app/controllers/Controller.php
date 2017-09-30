@@ -11,6 +11,7 @@ use League\Plates\Engine as Engine;
 abstract class Controller{
 
     private $template;
+    private $dbManager;
 
     /**
      * The method searches and renders a view
@@ -41,9 +42,17 @@ abstract class Controller{
      *
      * Checks if Engine is initialized and instantiates it
      */
-    private function instantiate()
-    {
+    private function instantiate(){
         if($this->template == null)
             $this->template = new Engine($GLOBALS['config']['Path']["Templates"]);
+    }
+
+    protected function getDbManager(): DatabaseManager{
+
+        if ($this->dbManager == null) {
+            $this->dbManager = new DatabaseManager();
+        }
+
+        return $this->dbManager;
     }
 }

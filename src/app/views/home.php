@@ -10,5 +10,4 @@ $this->layout('base', ["title" => "Homepage"]);
 
 ?>
 
-<h1> This is the queryset from database : <?=$this->e($value)?></h1>
-
+<?= $this->e($value)?>

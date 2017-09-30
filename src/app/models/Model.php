@@ -10,5 +10,9 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 abstract class Model extends Eloquent
 {
+    public function getSomething(): Model{
+        return $this;
+    }
+
 
 }

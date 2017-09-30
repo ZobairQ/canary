@@ -19,20 +19,26 @@ class UserModel extends Model
 
     public function __construct()
     {
+        $attrb = $this->getAttributes();
+        if (count($attrb) > 0){
+            $this->name = $this->getAttributes()['name'];
+            $this->username = $this->getAttributes()['username'];
+            $this->password = $this->getAttributes()['password'];
+        }
     }
     /**
      * @return string
      */
     public function getName()
     {
+        $this->name = $this->getAttribute("Name");
         return $this->name;
     }
 
     /**
      * @param string $name
      */
-    public function setName($name)
-    {
+    public function setName($name){
         $this->name = $name;
         $this->setAttribute("Name", $name);
     }
@@ -42,6 +48,7 @@ class UserModel extends Model
      */
     public function getUsername()
     {
+        $this->username = $this->getAttribute("Username");
         return $this->username;
 
     }
@@ -61,6 +68,7 @@ class UserModel extends Model
      */
     public function getPassword()
     {
+        $this->password = $this->getAttribute("Password");
         return $this->password;
     }
 
@@ -73,6 +81,4 @@ class UserModel extends Model
         $this->attributes['Password']  = $password;
 
     }
-
-
 }
