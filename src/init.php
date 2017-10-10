@@ -6,8 +6,8 @@
  * Time: 23:05
  */
 
-require_once($_SERVER['DOCUMENT_ROOT'] . "/Canary/src/autoload.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "/Canary/lib/vendor/autoload.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . $GLOBALS['projectConfig']['ProjectRoot']."/"."/src/autoload.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . $GLOBALS['projectConfig']['ProjectRoot']."/lib/vendor/autoload.php");
 
 
 error_reporting(E_ALL);

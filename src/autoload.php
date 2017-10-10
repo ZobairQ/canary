@@ -5,7 +5,7 @@
  * Date: 14-12-2016
  * Time: 19:38
  */
-require($_SERVER['DOCUMENT_ROOT'] . "/Canary/src/config.php");
+require($_SERVER['DOCUMENT_ROOT'] . $GLOBALS['projectConfig']['ProjectRoot'] ."/src/config.php");
 $allDir = [];
 
 spl_autoload_register(function ($className) {
@@ -60,7 +60,7 @@ spl_autoload_register(function ($className) {
 function constructFolders()
 {
     //TODO: only 5 layers folder support!
-    $dirs = glob($_SERVER['DOCUMENT_ROOT'] . '/Canary/*', GLOB_ONLYDIR);
+    $dirs = glob($_SERVER['DOCUMENT_ROOT'] . $GLOBALS['projectConfig']['ProjectRoot'] . '/*', GLOB_ONLYDIR);
 
     foreach ($dirs as $dir) {
         processPath($dir);

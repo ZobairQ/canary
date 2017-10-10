@@ -6,4 +6,5 @@
  * Time: 01:00
  */
 
+include_once ('config.php');
 include_once ('init.php');

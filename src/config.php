@@ -5,14 +5,19 @@
  * Date: 14-12-2016
  * Time: 01:00
  */
-$relativePath = $_SERVER['DOCUMENT_ROOT'] . "/Canary";
 
-$config =
+$projectConfig =
     [
+        "ProjectRoot" => "/Canary",
         "AppName" => " ",
         "Version" => " ",
         "Domain" => " ",
+    ];
 
+$relativePath = $_SERVER['DOCUMENT_ROOT']. $projectConfig['ProjectRoot'];
+
+$config =
+    [
         "Path" => [
             "App" => $relativePath . "src/app/",
             "Templates" => $relativePath . "/src/app/views/",
