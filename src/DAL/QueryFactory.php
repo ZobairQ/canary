@@ -14,6 +14,18 @@ class QueryFactory
         $this->model = $model;
     }
 
+    public function selectDistinct(string $columnName) : QueryFactory {
+        array_push($this->queries ,
+            [
+                'function' => 'selectDistinct',
+                'column' => $columnName,
+                'operator' => NULL,
+                'value' => NULL
+            ]);
+
+        return $this;
+    }
+
     public function orWhere(string $columnName, string $operator, $value){
         array_push($this->queries ,
             [
@@ -63,29 +75,47 @@ class QueryFactory
     }
 
     public function getOBJ(): Model{
-         $ret = $this->queryResults();
+        $ret = $this->queryResults();
 
         if ($ret->count() == 1) {
             return $ret->first();
-        }else {
+        }elseif($ret->count() == 0) {
+            throw new TypeError("No data found ");
+        } else {
             throw new TypeError("The query contains several rows, please use get() instead");
         }
     }
 
-    public  function get() : \Illuminate\Database\Eloquent\Collection {
+    public  function getList() : \Illuminate\Database\Eloquent\Collection {
         $arrayToReturn = $this->queryResults();
-
-        if ($arrayToReturn->count() > 1) {
+        if ($arrayToReturn->count() > 0) {
             return $arrayToReturn;
-        }else {
-            throw new TypeError("No or too less data found ");
         }
-}
+        throw new TypeError("No data found ");
+    }
+
+    public function get(string $propertyName) : array{
+        $ret = $this->queryResults();
+        $arrayToReturn = [];
+        if ($ret->count() > 0) {
+            $allItems = $ret->all();
+            if ($allItems) {
+                foreach ($allItems as $item) {
+                    array_push($arrayToReturn, $item[$propertyName]);
+                }
+            }
+            return $arrayToReturn;
+        }
+        throw new TypeError("The query contains several rows, please use get() instead");
+    }
+
     /**
      * @return array
      */
     private function queryResults(): \Illuminate\Database\Eloquent\Collection
     {
+        $index  = 0;
+        $result = NULL;
         foreach ($this->queries as $query) {
             $function = $query['function'];
             $column = $query['column'];
@@ -94,7 +124,11 @@ class QueryFactory
 
             switch ($function) {
                 case "where":
-                    $result = $this->model::$function($column, $operator, $value);
+                    if ($index == 0) {
+                        $result = $this->model::$function($column, $operator, $value);
+                        break;
+                    }
+                    $result = $result->$function($column, $operator, $value);
                     break;
                 case "andWhere":
                     $result = $result->where($column, $operator, $value);
@@ -102,7 +136,11 @@ class QueryFactory
                 case "orWhere":
                     $result = $result->orWhere($column, $operator, $value);
                     break;
+                case "selectDistinct":
+                    $result = $this->model::distinct()->select($column);
+                    break;
             }
+            $index++;
         }
         return $result->get();
     }

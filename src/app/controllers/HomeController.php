@@ -28,7 +28,6 @@ class HomeController extends Controller
                 ->where('name', Operator::EQUAL, 'zobair')
                 ->where('username', Operator::EQUAL, 'bambolina')
                 ->where('password', Operator::EQUAL, 'pass')
-                ->orWhere()
                 ->getOBJ();
             $this->render('home', ['value' => $asdf]);
         } catch (TypeError $e) {

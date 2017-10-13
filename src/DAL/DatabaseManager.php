@@ -15,14 +15,19 @@ class DatabaseManager{
      */
     public function from(string $model){
         if (class_exists($model)) {
-            // Build query functions that belongs to the model
-//            $variables = get_class_var($model);
+//             Build query functions that belongs to the model
+//            this is not even possible
+//            $ref = new ReflectionClass($model);
+//            $properties = $ref->getProperties();
+//            var_dump($properties);
 //
-//            if (true) {
+//            if ($properties) {
 //                $index = 0;
 //                $wantedMethod = [];
-//                foreach ($variables as $variableName) {
-//                    $wantedMethod[$index] = "where" . $variableName . "Exist";
+//                foreach ($properties as $property) {
+//                    if ($this->isTargetProperty($model, $property, $ref)) {
+//                        $wantedMethod[$index] = "where" . ucfirst($property->getName()) . "Exist";
+//                    }
 //                    $index++;
 //                }
 //            }
@@ -31,5 +36,30 @@ class DatabaseManager{
             return new QueryFactory($model);
         }
         return NULL;
+    }
+
+    /**
+     * @deprecated
+     * @param string $model
+     * @param $property
+     * @return bool
+     */
+    private function isTargetProperty(string $model, $property, $ref): bool
+    {
+        $firstCondition =  $property->class == $model;
+        $secondCondition = false;
+        $methods = $ref->getMethods();
+        if ($firstCondition) {
+            foreach ($methods as $method) {
+                if ($method->class == $model) {
+                    if (strtolower($method->name) == 'get' . $property->name) {
+                        return true;
+                    }
+                }
+            }
+        }else{
+            $firstCondition = false;
+        }
+        return $firstCondition && $secondCondition;
     }
 }
