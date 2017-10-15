@@ -1,84 +1,44 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: Zobair
- * Date: 15-12-2016
- * Time: 22:09
+ * Date: 14-10-2017
+ * Time: 22:00
  */
 
 class UserModel extends Model
 {
     //Fields
-    private $name;
-    private $username;
-    private $password;
-    protected $table = 'user_infos';
     public $timestamps = false;
-    protected $fillable = ['Username', "Password", "Name"];
+    protected $table = 'users';
+    protected $fillable = ['id','username', "password", "posts_id"];
 
+    /**
+     * UserModel constructor.
+     */
     public function __construct()
     {
-        $attrb = $this->getAttributes();
-        if (count($attrb) > 0){
-            $this->name = $this->getAttributes()['name'];
-            $this->username = $this->getAttributes()['username'];
-            $this->password = $this->getAttributes()['password'];
-        }
-    }
-    /**
-     * @return string
-     */
-    public function getName()
-    {
-        $this->name = $this->getAttribute("Name");
-        return $this->name;
     }
 
-    /**
-     * @param string $name
-     */
-    public function setName($name){
-        $this->name = $name;
-        $this->setAttribute("Name", $name);
+    public function getPassword(){
+        $this->getAttribute('password');
     }
 
-    /**
-     * @return string
-     */
-    public function getUsername()
-    {
-        $this->username = $this->getAttribute("Username");
-        return $this->username;
 
+    public function getUsername(){
+        $this->getAttribute('username');
     }
 
-    /**
-     * @param string $username
-     */
+    public function getPosts(){
+        return $this->hasMany(PostModel::class, 'user_id');
+    }
+
     public function setUsername($username)
-    {
-        $this->username = $username;
-        $this->setAttribute("Username", $username);
+    {        $this->setAttribute('username', $username);
 
     }
 
-    /**
-     * @return string
-     */
-    public function getPassword()
-    {
-        $this->password = $this->getAttribute("Password");
-        return $this->password;
-    }
-
-    /**
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-        $this->attributes['Password']  = $password;
-
+    public  function setPassword($password){
+        $this->setAttribute('password', $password);
     }
 }
