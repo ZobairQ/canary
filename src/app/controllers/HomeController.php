@@ -1,4 +1,6 @@
 <?php
+use GraphQL\GraphQL;
+use GraphQL\Type\Schema;
 /**
  * Created by PhpStorm.
  * User: Zobair
@@ -8,8 +10,37 @@
 
 class HomeController extends Controller
 {
-    public function __construct()
-    {
+    public function testService(){
+        $schema = new Schema([
+            'query' => new QueryType(),
+        ]);
+
+        $this->startGraphQLService($schema, null,'query');
+    }
+
+    public function testTheDatabase(){
+        $arr = $this->getDbManager()->from(UserModelold::class)
+            ->where('id', Operator::EQUAL, '5')
+            ->getOBJ();
+
+    }
+
+    public function home($args = false){
+        if ($args) {
+            $id = $args[0];
+            $user = $this->getDbManager()->from(UserModelold::class)
+                ->where('id', Operator::EQUAL, $id)
+                ->getOBJ();
+           echo  $user->Password;
+        }
+
+        $listOfObj = $this->getDbManager()->from(UserModelold::class)
+            ->orderBy('Name', Operator::DESC)
+            ->getList();
+
+        foreach ($listOfObj as $obj){
+            echo $obj->getName(). " <br/>";
+        }
     }
 
     final function createData(){
@@ -19,13 +50,12 @@ class HomeController extends Controller
         $post = new PostModel();
         $post->setContent("Hello World");
         $post->setTitle("The beginning");
-        echo "everyhting seem nice";
+        echo "everything seem nice";
         $user->save();
         $post->getUsers()->associate($user);
         $post->save();
 
     }
-
 
     public function help($args = false){
 

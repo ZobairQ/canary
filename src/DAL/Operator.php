@@ -11,4 +11,6 @@ abstract class Operator{
     const GREATERTHAN = '>';
     const LESSTHAN = '<';
     const NOT = '!=';
+    const DESC = 'DESC';
+    const ASC = 'ASC';
 }

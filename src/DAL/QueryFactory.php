@@ -1,4 +1,7 @@
 <?php
+
+use Illuminate\Database\Eloquent\Collection;
+
 /**
  * Created by PhpStorm.
  * User: Zobair
@@ -23,6 +26,28 @@ class QueryFactory
                 'value' => NULL
             ]);
 
+        return $this;
+    }
+
+    public function orderBy(string $columnName, string $operator):QueryFactory{
+        array_push($this->queries,
+            [
+                'function' => 'orderBy',
+                'column' => $columnName,
+                'operator' => $operator,
+                'value' => NULL
+            ]);
+        return $this;
+    }
+
+    public function groupBy($columnName):QueryFactory{
+        array_push($this->queries,
+            [
+                'function' => 'groupBy',
+                'column' => $columnName,
+                'operator' => NULL,
+                'value' => NULL
+            ]);
         return $this;
     }
 
@@ -64,16 +89,29 @@ class QueryFactory
         return $this;
     }
 
+    /**
+     * @param $propertyName
+     * @return bool
+     */
     public function whereIDExists($propertyName): bool {
         $result = $this->model::where($propertyName, '!=', NULL);
         return !empty(array_filter((array)$result));
     }
 
+    /**
+     * @param $columnName
+     * @param $columnValue
+     * @return bool
+     */
     public function whereExist($columnName, $columnValue){
         $result = $this->model::where([$columnName => $columnValue]);
         return !empty(array_filter((array)$result));
     }
 
+    /**
+     * @return Model
+     * @throws TypeError
+     */
     public function getOBJ(): Model{
         $ret = $this->queryResults();
 
@@ -86,7 +124,11 @@ class QueryFactory
         }
     }
 
-    public  function getList() : \Illuminate\Database\Eloquent\Collection {
+    /**
+     * @return Collection
+     * @throws TypeError
+     */
+    public  function getList() : Collection {
         $arrayToReturn = $this->queryResults();
         if ($arrayToReturn->count() > 0) {
             return $arrayToReturn;
@@ -94,6 +136,11 @@ class QueryFactory
         throw new TypeError("No data found ");
     }
 
+    /**
+     * @param string $propertyName
+     * @return array
+     * @throws TypeError
+     */
     public function get(string $propertyName) : array{
         $ret = $this->queryResults();
         $arrayToReturn = [];
@@ -106,13 +153,13 @@ class QueryFactory
             }
             return $arrayToReturn;
         }
-        throw new TypeError("The query contains several rows, please use get() instead");
+        throw new TypeError("The query contains several rows, please use getList() instead");
     }
 
     /**
-     * @return array
+     * @return Collection
      */
-    private function queryResults(): \Illuminate\Database\Eloquent\Collection
+    private function queryResults(): Collection
     {
         $index  = 0;
         $result = NULL;
@@ -138,6 +185,15 @@ class QueryFactory
                     break;
                 case "selectDistinct":
                     $result = $this->model::distinct()->select($column);
+                    break;
+                case "orderBy":
+                    if($index == 0){
+                        $result = $this->model::orderBy($column, $operator);
+                    }
+                    $result = $result->orderBy($column, $operator);
+                    break;
+                case "groupBy":
+                    $result = $result->groupBy($column);
                     break;
             }
             $index++;

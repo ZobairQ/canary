@@ -60,7 +60,6 @@ class UserModelold extends Model
     {
         $this->username = $username;
         $this->setAttribute("Username", $username);
-
     }
 
     /**

@@ -6,6 +6,8 @@
  * Time: 01:00
  */
 
+use GraphQL\GraphQL;
+use GraphQL\Type\Schema;
 use League\Plates\Engine as Engine;
 
 abstract class Controller{
@@ -21,6 +23,29 @@ abstract class Controller{
     protected function render($templateName, $params = []){
         $this->instantiate();
         echo $this->template->render($templateName, $params);
+    }
+
+    protected function startGraphQLService(Schema $schema, $rootValue,String $rootNode){
+        $rawInput = file_get_contents('php://input');
+        $input = json_decode($rawInput, true);
+        $query = $input[$rootNode];
+        $variableValues = isset($input['variables']) ? $input['variables'] : null;
+
+        try {
+            //$rootValue = ['prefix' => 'You said: ']; //TODO:Fix this to something more meaninful
+            $result = GraphQL::executeQuery($schema, $query, $rootValue, null, $variableValues);
+            $output = $result->toArray();
+        } catch (\Exception $e) {
+            $output = [
+                'errors' => [
+                    [
+                        'message' => $e->getMessage()
+                    ]
+                ]
+            ];
+        }
+        header('Content-Type: application/json');
+        echo json_encode($output);
     }
 
     /**
