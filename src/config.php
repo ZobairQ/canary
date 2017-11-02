@@ -8,7 +8,7 @@
 
 $projectConfig =
     [
-        "ProjectRoot" => "/Canary",
+        "ProjectRoot" => "/cpox",
         "AppName" => " ",
         "Version" => " ",
         "Domain" => " ",
