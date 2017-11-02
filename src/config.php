@@ -36,7 +36,7 @@ $config =
                 [
                     "DatabaseType" => "mysql",
                     "Host" => "127.0.0.1",
-                    "DatabaseName" => "users",
+                    "DatabaseName" => "cpox",
                     "Username" => "root",
                     "Password" => ""
                 ],
