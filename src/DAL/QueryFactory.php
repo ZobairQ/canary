@@ -141,7 +141,15 @@ class QueryFactory
      * @return array
      * @throws TypeError
      */
-    public function get(string $propertyName) : array{
+    public function get(string $propertyName = "") : array{
+        if (empty($propertyName)) {
+            $key = array_search('selectDistinct', array_column($this->queries, 'function'));
+            if ($key !== false) {
+                $propertyName = $this->queries[$key]['column'];
+            } else {
+                throw new TypeError("get function needs a parameter");
+            }
+        }
         $ret = $this->queryResults();
         $arrayToReturn = [];
         if ($ret->count() > 0) {
@@ -155,14 +163,17 @@ class QueryFactory
         }
         throw new TypeError("The query contains several rows, please use getList() instead");
     }
-
     /**
      * @return Collection
      */
     private function queryResults(): Collection
     {
-        $index  = 0;
-        $result = NULL;
+        $index = 0;
+        $result = null;
+        if (empty($this->queries)) {
+            $result = $this->model::all();
+            return $result;
+        }
         foreach ($this->queries as $query) {
             $function = $query['function'];
             $column = $query['column'];
