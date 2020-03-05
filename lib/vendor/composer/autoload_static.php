@@ -30,10 +30,6 @@ class ComposerStaticInitde320cdc2953ee41d7c34cbe7faaf4e7
         array (
             'GraphQL\\' => 8,
         ),
-        'C' => 
-        array (
-            'Carbon\\' => 7,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -65,13 +61,20 @@ class ComposerStaticInitde320cdc2953ee41d7c34cbe7faaf4e7
         array (
             0 => __DIR__ . '/..' . '/webonyx/graphql-php/src',
         ),
-        'Carbon\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
-        ),
+    );
+
+    public static $fallbackDirsPsr4 = array (
+        0 => __DIR__ . '/..' . '/nesbot/carbon/src',
     );
 
     public static $prefixesPsr0 = array (
+        'U' => 
+        array (
+            'UpdateHelper\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/kylekatarnls/update-helper/src',
+            ),
+        ),
         'D' => 
         array (
             'Doctrine\\Common\\Inflector\\' => 
@@ -86,6 +89,7 @@ class ComposerStaticInitde320cdc2953ee41d7c34cbe7faaf4e7
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitde320cdc2953ee41d7c34cbe7faaf4e7::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitde320cdc2953ee41d7c34cbe7faaf4e7::$prefixDirsPsr4;
+            $loader->fallbackDirsPsr4 = ComposerStaticInitde320cdc2953ee41d7c34cbe7faaf4e7::$fallbackDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInitde320cdc2953ee41d7c34cbe7faaf4e7::$prefixesPsr0;
 
         }, null, ClassLoader::class);

@@ -19,6 +19,7 @@ function setupTheDatabase(){
     $capsule->addConnection([
         "driver" => $GLOBALS['config']['Databases']['MainDatabase']['DatabaseType'],
         "host" => $GLOBALS['config']['Databases']['MainDatabase']['Host'],
+        "port" => env('DB_PORT', 3306),
         "database" =>$GLOBALS['config']['Databases']['MainDatabase']['DatabaseName'],
         "username" => $GLOBALS['config']['Databases']['MainDatabase']['Username'],
         "password" => $GLOBALS['config']['Databases']['MainDatabase']['Password'],
